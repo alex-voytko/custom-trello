@@ -7,7 +7,8 @@ h5,
 p,
 button,
 span,
-a {
+a,
+input {
   font-family: "Poppins", sans-serif;
 }
 *,
@@ -62,6 +63,7 @@ select {
   font: inherit;
 }
 button {
+  font-family: "Poppins", sans-serif;
   border: none;
   padding: 5px;
   border-radius: 4px;
@@ -76,6 +78,19 @@ button {
 div {
   border-radius: 10px;
 }
+input {
+  border-radius: 10px;
+  border: none;
+  padding: 10px;
+  -webkit-box-shadow: 5px 1px 27px 3px rgba(0, 0, 0, 0.7);
+  box-shadow: 5px 1px 27px 3px rgba(0, 0, 0, 0.7);
+  &:focus,
+  &:active {
+    outline: 2px solid $accentColor1;
+    transform: scale(1.04);
+  }
+}
+
 p:hover,
 h1:hover,
 h2:hover,
