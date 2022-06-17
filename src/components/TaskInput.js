@@ -1,10 +1,14 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux/es/exports";
 import shortid from "shortid";
-import { addTask } from "../redux/trello-redux/trello-slice";
+import {
+  addTask,
+  selectTask,
+  editTask,
+} from "../redux/trello-redux/trello-slice";
 import { actionContext } from "../App";
 
-function TaskInput() {
+function TaskInput({ edit }) {
   const dispatch = useDispatch();
   const { onCloseModal } = useContext(actionContext);
   const selectedTask = useSelector(state => state.boards.selectedTask);
@@ -14,18 +18,25 @@ function TaskInput() {
   const handleChange = e => setText(e.target.value);
   const handleSubmit = e => {
     e.preventDefault();
-    dispatch(addTask({ id: shortid.generate(), text: text }));
+    edit
+      ? dispatch(editTask({ ...selectedTask, text: text }))
+      : dispatch(addTask({ id: shortid.generate(), text: text }));
+
+    dispatch(selectTask({}));
     onCloseModal();
   };
-
-  //   useEffect(
-  //     useCallback(() => {
-  //       if (task) {
-  //         setEditTaskId(task.id);
-  //       }
-  //     }, [task]),
-  //     [task],
-  //   );
+  useEffect(
+    useCallback(() => {
+      if (edit) {
+        console.log("срабтал edit: " + edit);
+        console.log(selectedTask.text);
+        const ref = document.querySelector("#main-input");
+        ref.value = selectedTask.text;
+      }
+    }, [edit]),
+    [edit],
+  );
+  console.log(text);
   return (
     <>
       <form onSubmit={handleSubmit}>

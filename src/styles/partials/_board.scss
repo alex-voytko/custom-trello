@@ -15,12 +15,15 @@
   }
   .board-list {
     margin-top: 20px;
-    li {
+    .item {
       padding: 10px;
       background-color: $backgroundColor1;
       border-radius: 6px;
       &:not(:last-child) {
         margin-bottom: 10px;
+      }
+      &.selected {
+        outline: 2px solid red;
       }
     }
   }

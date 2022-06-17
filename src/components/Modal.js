@@ -3,7 +3,7 @@ import TaskInput from "./TaskInput";
 import { actionContext } from "../App";
 import { useContext } from "react";
 
-function Modal() {
+function Modal({ edit }) {
   const { onCloseModal } = useContext(actionContext);
 
   const onBackdropClick = e => {
@@ -13,7 +13,7 @@ function Modal() {
   return createPortal(
     <div id="backdrop-modal" onClick={onBackdropClick}>
       <div className="modal-content">
-        <TaskInput />
+        <TaskInput edit={edit} />
       </div>
     </div>,
     document.querySelector("#modal-root"),

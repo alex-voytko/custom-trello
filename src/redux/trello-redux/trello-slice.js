@@ -11,22 +11,29 @@ const trelloSlice = createSlice({
       state.items = [...payload];
     },
     addTask(state, { payload }) {
-      state.items[0].tasks.push(payload);
+      state.items[0].tasks = [...state.items[0].tasks, payload];
     },
     selectTask(state, { payload }) {
+      state.selectedTask = { ...payload };
+    },
+    editTask(state, { payload }) {
       state.items.forEach(board => {
-        board.tasks.find(item => {
-          if (item.id === payload) {
-            item.selected = true;
-            state.selectedTask = { ...item };
+        board.tasks.find(el => {
+          if (el.id === payload.id) {
+            el.text = payload.text;
           }
-          return;
         });
+      });
+    },
+    removeTask(state, { payload }) {
+      state.items.forEach(board => {
+        board.tasks = board.tasks.filter(item => item.id !== payload);
       });
     },
   },
 });
 
-export const { fetchBoards, addTask, selectTask } = trelloSlice.actions;
+export const { fetchBoards, addTask, selectTask, editTask, removeTask } =
+  trelloSlice.actions;
 
 export default trelloSlice.reducer;

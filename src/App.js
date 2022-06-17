@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, createContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchBoards } from "./redux/trello-redux/trello-slice";
+import { fetchBoards, removeTask } from "./redux/trello-redux/trello-slice";
 import AppBar from "./components/AppBar";
 import ToolBar from "./components/ToolBar";
 import Container from "./components/Container";
@@ -11,10 +11,11 @@ import initialState from "./data/initialState.json";
 export const actionContext = createContext();
 
 function App() {
-  const [modalToggle, setModalToggle] = useState(false);
-  const [clickType, setClickType] = useState("");
   const dispatch = useDispatch();
   const boards = useSelector(state => state.boards.items);
+  const selectedTask = useSelector(state => state.boards.selectedTask);
+  const [modalToggle, setModalToggle] = useState(false);
+  const [clickType, setClickType] = useState("");
 
   const handleClick = val => setClickType(val);
   const onCloseModal = () => {
@@ -38,7 +39,8 @@ function App() {
           setModalToggle(true);
           break;
         case "remove-btn":
-          setModalToggle(true);
+          dispatch(removeTask(selectedTask.id));
+          setClickType("");
           break;
         default:
           break;
@@ -55,7 +57,7 @@ function App() {
           <ToolBar />
           <BoardList boards={boards} />
         </Container>
-        {modalToggle && <Modal />}
+        {modalToggle && <Modal edit={clickType === "edit-btn"} />}
       </actionContext.Provider>
     </Container>
   );
