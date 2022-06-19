@@ -33,13 +33,11 @@ function App() {
   const handleKeyPress = useCallback(
     e => {
       if (e.ctrlKey && e.code === "KeyZ") {
-        console.log("нажата Z");
         if (!i) return;
         dispatch(fetchBoards(history[i - 1]));
         setI(i - 1);
       }
       if (e.ctrlKey && e.code === "KeyY") {
-        console.log("нажата Y");
         if (i === history.length - 1) return;
         dispatch(fetchBoards(history[i + 1]));
         setI(i + 1);
@@ -48,7 +46,6 @@ function App() {
     [i],
   );
 
-  console.log(i);
   useEffect(() => {
     window.addEventListener("keyup", handleKeyPress);
     return () => {
@@ -57,8 +54,6 @@ function App() {
   }, [handleKeyPress]);
   useEffect(
     useCallback(() => {
-      console.log("Изменилась история");
-      console.log(history);
       setI(history.length - 1);
     }, [history]),
     [history],
