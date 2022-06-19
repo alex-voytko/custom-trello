@@ -13,7 +13,6 @@ function TaskInput({ edit }) {
   const { onCloseModal } = useContext(actionContext);
   const selectedTask = useSelector(state => state.boards.selectedTask);
   const [text, setText] = useState("");
-  const [editTaskId, setEditTaskId] = useState("");
 
   const handleChange = e => setText(e.target.value);
   const handleSubmit = e => {
@@ -28,15 +27,12 @@ function TaskInput({ edit }) {
   useEffect(
     useCallback(() => {
       if (edit) {
-        console.log("срабтал edit: " + edit);
-        console.log(selectedTask.text);
         const ref = document.querySelector("#main-input");
         ref.value = selectedTask.text;
       }
     }, [edit]),
     [edit],
   );
-  console.log(text);
   return (
     <>
       <form onSubmit={handleSubmit}>

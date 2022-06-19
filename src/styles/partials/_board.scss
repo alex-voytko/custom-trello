@@ -22,8 +22,19 @@
       &:not(:last-child) {
         margin-bottom: 10px;
       }
+      &:last-child {
+        margin-bottom: 100%;
+      }
       &.selected {
         outline: 2px solid red;
+      }
+      &:hover,
+      &:hover * {
+        cursor: grab;
+      }
+      p {
+        display: block;
+        width: fit-content;
       }
     }
   }

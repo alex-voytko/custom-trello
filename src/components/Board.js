@@ -1,8 +1,14 @@
-import { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectTask } from "../redux/trello-redux/trello-slice";
 
-function Board({ data }) {
+function Board({
+  board,
+  handleDragStart,
+  handleDragOver,
+  handleDrop,
+  handleDragEnd,
+  handleDropOnEmpty,
+}) {
   const dispatch = useDispatch();
   const selectedItem = useSelector(state => state.boards.selectedTask);
 
@@ -18,19 +24,28 @@ function Board({ data }) {
       }),
     );
   };
-  // console.log(selected);
+
   return (
-    <div className="board">
-      <h2>{data.name}</h2>
+    <div
+      className="board"
+      onDragOver={handleDragOver}
+      onDrop={e => handleDropOnEmpty(e, board)}
+    >
+      <h2>{board.name}</h2>
       <ul className="board-list">
-        {data.tasks.map(({ id, text }) => (
+        {board.tasks.map(task => (
           <li
-            className={selectedItem.id === id ? `item selected` : `item`}
-            data-id={id}
-            key={id}
+            className={selectedItem.id === task.id ? `item selected` : `item`}
+            data-id={task.id}
+            key={task.id}
             onClick={handleClick}
+            draggable={true}
+            onDragStart={e => handleDragStart(e, task, board)}
+            onDragLeave={handleDragEnd}
+            onDragOver={handleDragOver}
+            onDrop={e => handleDrop(e, task, board)}
           >
-            <p>{text}</p>
+            <p>{task.text}</p>
           </li>
         ))}
       </ul>
