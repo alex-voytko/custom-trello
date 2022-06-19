@@ -23,7 +23,6 @@ function BoardList({ boards }) {
     }
   };
   const handleDrop = (e, task, board) => {
-    console.log("TaskDropEvent");
     e.preventDefault();
     e.target.style.boxShadow = "none";
     const boardToString = JSON.stringify(board);
@@ -56,7 +55,6 @@ function BoardList({ boards }) {
     dispatch(fetchBoards(updatedBoards));
   };
   const handleDropOnEmpty = (e, board) => {
-    console.log("boardDropEvent");
     e.preventDefault();
     if (!board.tasks.length) {
       const boardToString = JSON.stringify(board);

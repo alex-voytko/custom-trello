@@ -17,13 +17,16 @@ function TaskInput({ edit }) {
   const handleChange = e => setText(e.target.value);
   const handleSubmit = e => {
     e.preventDefault();
-    edit
-      ? dispatch(editTask({ ...selectedTask, text: text }))
-      : dispatch(addTask({ id: shortid.generate(), text: text }));
+    if (text) {
+      edit
+        ? dispatch(editTask({ ...selectedTask, text: text }))
+        : dispatch(addTask({ id: shortid.generate(), text: text }));
 
-    dispatch(selectTask({}));
+      edit && dispatch(selectTask({}));
+    }
     onCloseModal();
   };
+
   useEffect(
     useCallback(() => {
       if (edit) {
@@ -33,6 +36,7 @@ function TaskInput({ edit }) {
     }, [edit]),
     [edit],
   );
+
   return (
     <>
       <form onSubmit={handleSubmit}>
