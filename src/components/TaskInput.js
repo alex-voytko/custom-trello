@@ -26,7 +26,6 @@ function TaskInput({ edit }) {
     }
     onCloseModal();
   };
-
   useEffect(
     useCallback(() => {
       if (edit) {

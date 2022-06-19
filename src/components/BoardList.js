@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { fetchBoards, selectTask } from "../redux/trello-redux/trello-slice";
+import {
+  fetchBoards,
+  selectTask,
+  pushInHistory,
+} from "../redux/trello-redux/trello-slice";
 import Board from "./Board";
 
 function BoardList({ boards }) {
@@ -53,6 +57,7 @@ function BoardList({ boards }) {
       });
     }
     dispatch(fetchBoards(updatedBoards));
+    dispatch(pushInHistory(updatedBoards));
   };
   const handleDropOnEmpty = (e, board) => {
     e.preventDefault();
@@ -72,6 +77,7 @@ function BoardList({ boards }) {
         return updatedBoards.push(b);
       });
       dispatch(fetchBoards(updatedBoards));
+      dispatch(pushInHistory(updatedBoards));
     }
   };
   return (

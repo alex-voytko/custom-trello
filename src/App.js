@@ -23,49 +23,50 @@ function App() {
 
   const [modalToggle, setModalToggle] = useState(false);
   const [clickType, setClickType] = useState("");
-  const [index, setIndex] = useState(0);
+  const [i, setI] = useState(0);
 
   const handleClick = val => setClickType(val);
   const onCloseModal = () => {
     setModalToggle(false);
     setClickType("");
   };
-  const handleKeyDown = e => {
-    e.preventDefault();
-    switch (e.ctrlKey && e.key) {
-      case "z":
+  const handleKeyPress = useCallback(
+    e => {
+      if (e.ctrlKey && e.code === "KeyZ") {
         console.log("нажата Z");
-        setIndex(index > 0 ? index - 1 : index);
-        console.log(history);
-        console.log(history[index]);
-        dispatch(fetchBoards(history[index]));
-        break;
-      case "y":
+        if (!i) return;
+        dispatch(fetchBoards(history[i - 1]));
+        setI(i - 1);
+      }
+      if (e.ctrlKey && e.code === "KeyY") {
         console.log("нажата Y");
-        setIndex(index !== history.length - 1 ? index + 1 : index);
-        console.log(history);
-        console.log(history[index]);
-        dispatch(fetchBoards(history[index]));
-        break;
-      default:
-        return;
-    }
-  };
+        if (i === history.length - 1) return;
+        dispatch(fetchBoards(history[i + 1]));
+        setI(i + 1);
+      }
+    },
+    [i],
+  );
 
+  console.log(i);
+  useEffect(() => {
+    window.addEventListener("keyup", handleKeyPress);
+    return () => {
+      window.removeEventListener("keyup", handleKeyPress);
+    };
+  }, [handleKeyPress]);
   useEffect(
     useCallback(() => {
       console.log("Изменилась история");
       console.log(history);
-      if (index > 0) setIndex(history.length - 1);
+      setI(history.length - 1);
     }, [history]),
     [history],
   );
-  console.log(index);
   useEffect(
     useCallback(() => {
       dispatch(fetchBoards(initialState));
       dispatch(pushInHistory(initialState));
-      window.addEventListener("keydown", handleKeyDown);
     }, []),
     [],
   );
